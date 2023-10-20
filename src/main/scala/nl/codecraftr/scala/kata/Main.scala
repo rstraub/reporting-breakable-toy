@@ -1,10 +1,10 @@
 package nl.codecraftr.scala.kata
 
-object Main extends App {
-  def hello(name: String): String = name match {
-    case "dev" => "Hello, creator!"
-    case _     => "Hello, world!"
-  }
+import nl.codecraftr.scala.kata.Parser.parse
 
-  println(hello("dev"))
+object Main extends App {
+  parse(args: _*)
+    .foreach { results: List[Int] =>
+      results.foreach(println)
+    }
 }
