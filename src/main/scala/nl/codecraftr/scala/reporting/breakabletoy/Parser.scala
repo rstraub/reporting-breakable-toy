@@ -1,35 +1,28 @@
-package nl.codecraftr.scala.kata
+package nl.codecraftr.scala.reporting.breakabletoy
 
 import cats.data.Validated._
 import cats.data.ValidatedNel
 import cats.implicits._
+import ParsingError._
 
 import scala.util.Try
 
+// https://typelevel.org/cats/datatypes/validated.html
 object Parser {
-  sealed trait ParsingError {
-    def message: String
-  }
-  final case class InvalidNumberError(input: String) extends ParsingError {
-    override def message: String = s"Invalid number: '$input'"
-  }
-  final case class InvalidAgeError(age: Int) extends ParsingError {
-    override def message: String = s"Age must be a positive number: '$age'"
-  }
-  final case class NotAllowedToDriveError(age: Age) extends ParsingError {
-    override def message: String = s"Age must be at least 18 to drive: '$age'"
-  }
 
   def parse(inputs: String*): ValidatedNel[ParsingError, List[DrivingAge]] =
     parse(
       inputs.toList
     )
 
-  def parse(inputs: List[String]): ValidatedNel[ParsingError, List[DrivingAge]] =
+  def parse(
+      inputs: List[String]
+  ): ValidatedNel[ParsingError, List[DrivingAge]] =
     inputs
       .map(parse)
       .traverse(_.toValidatedNel)
 
+  // TODO can we make these errors cascade
   private def parse(input: String): Either[ParsingError, DrivingAge] =
     for {
       number <- parseNumber(input)
@@ -41,12 +34,11 @@ object Parser {
     input.toInt
   ).toEither.leftMap(_ => InvalidNumberError(input))
 
-  // TODO explore way to move this near Age
+  // TODO explore way to move validation closer to Age
   private def parseAge(age: Int): Either[InvalidAgeError, Age] =
     if (age < 0) Left(InvalidAgeError(age)) else Right(Age(age))
 
-  // TODO how to move this near DrivingAge?
-  // TODO how could we not duplicate the data model between Age -> DrivingAge
+  // TODO explore way to move validation closer to DrivingAge
   private def parseDrivingAge(
       age: Age
   ): Either[NotAllowedToDriveError, DrivingAge] =

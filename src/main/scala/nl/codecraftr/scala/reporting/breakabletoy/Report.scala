@@ -1,8 +1,7 @@
-package nl.codecraftr.scala.kata
+package nl.codecraftr.scala.reporting.breakabletoy
 
 import cats.Show
 import cats.data.NonEmptyList
-import nl.codecraftr.scala.kata.Parser.ParsingError
 
 case class Report(errors: NonEmptyList[ParsingError])
 

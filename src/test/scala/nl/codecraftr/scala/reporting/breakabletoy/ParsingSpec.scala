@@ -1,8 +1,8 @@
-package nl.codecraftr.scala.kata
+package nl.codecraftr.scala.reporting.breakabletoy
 
 import cats.data.NonEmptyList
 import cats.data.Validated.{Invalid, Valid}
-import nl.codecraftr.scala.kata.Parser.{InvalidAgeError, InvalidNumberError, NotAllowedToDriveError}
+import ParsingError._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
