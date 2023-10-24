@@ -1,26 +1,26 @@
 package nl.codecraftr.scala.reporting.breakabletoy
 
 import cats.data.Validated._
-import cats.data.ValidatedNel
+import cats.data.ValidatedNec
 import cats.implicits._
-import ParsingError._
+import nl.codecraftr.scala.reporting.breakabletoy.ParsingError._
 
 import scala.util.Try
 
 // https://typelevel.org/cats/datatypes/validated.html
 object Parser {
 
-  def parse(inputs: String*): ValidatedNel[ParsingError, List[DrivingAge]] =
+  def parse(inputs: String*): ValidatedNec[ParsingError, List[DrivingAge]] =
     parse(
       inputs.toList
     )
 
   def parse(
       inputs: List[String]
-  ): ValidatedNel[ParsingError, List[DrivingAge]] =
+  ): ValidatedNec[ParsingError, List[DrivingAge]] =
     inputs
       .map(parse)
-      .traverse(_.toValidatedNel)
+      .traverse(_.toValidatedNec)
 
   // TODO can we make these errors cascade
   private def parse(input: String): Either[ParsingError, DrivingAge] =

@@ -1,8 +1,8 @@
 package nl.codecraftr.scala.reporting.breakabletoy
 
-import cats.data.NonEmptyList
+import cats.data.NonEmptyChain
 import cats.data.Validated.{Invalid, Valid}
-import ParsingError._
+import nl.codecraftr.scala.reporting.breakabletoy.ParsingError._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -17,7 +17,7 @@ class ParsingSpec extends AnyFlatSpec with Matchers {
     val result = Parser.parse("c", "18", "a")
 
     result shouldBe Invalid(
-      NonEmptyList.of(
+      NonEmptyChain.of(
         InvalidNumberError("c"),
         InvalidNumberError("a")
       )
@@ -28,7 +28,7 @@ class ParsingSpec extends AnyFlatSpec with Matchers {
     val result = Parser.parse("21", "-1")
 
     result shouldBe Invalid(
-      NonEmptyList.of(
+      NonEmptyChain.of(
         InvalidAgeError(-1)
       )
     )
@@ -38,7 +38,7 @@ class ParsingSpec extends AnyFlatSpec with Matchers {
     val result = Parser.parse("17")
 
     result shouldBe Invalid(
-      NonEmptyList.of(
+      NonEmptyChain.of(
         NotAllowedToDriveError(Age(17))
       )
     )
@@ -48,7 +48,7 @@ class ParsingSpec extends AnyFlatSpec with Matchers {
     val result = Parser.parse("c", "-1", "17")
 
     result shouldBe Invalid(
-      NonEmptyList.of(
+      NonEmptyChain.of(
         InvalidNumberError("c"),
         InvalidAgeError(-1),
         NotAllowedToDriveError(Age(17))

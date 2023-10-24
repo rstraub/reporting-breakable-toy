@@ -1,9 +1,10 @@
 package nl.codecraftr.scala.reporting.breakabletoy
 
 import cats.Show
-import cats.data.NonEmptyList
+import cats.data.NonEmptyChain
+import cats.implicits._
 
-case class Report(errors: NonEmptyList[ParsingError])
+case class Report(errors: NonEmptyChain[ParsingError])
 
 object Report {
   implicit val showReport: Show[Report] = Show.show { report =>
