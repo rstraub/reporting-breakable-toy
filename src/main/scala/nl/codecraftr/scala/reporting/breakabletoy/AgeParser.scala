@@ -1,15 +1,14 @@
 package nl.codecraftr.scala.reporting.breakabletoy
 
 import cats.data.Validated._
-import cats.data.{Validated, ValidatedNec}
+import cats.data.ValidatedNec
 import cats.implicits._
-import cats.syntax._
 import nl.codecraftr.scala.reporting.breakabletoy.ParsingError._
 
 import scala.util.Try
 
 // https://typelevel.org/cats/datatypes/validated.html
-object Parser {
+object AgeParser {
 
   def parse(inputs: String*): ValidatedNec[ParsingError, List[DrivingAge]] =
     parse(

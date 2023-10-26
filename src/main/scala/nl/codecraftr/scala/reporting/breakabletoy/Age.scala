@@ -22,7 +22,7 @@ object Age {
     Try(Age(number)).toEither.leftMap(_ => InvalidAgeError(number))
 }
 
-case class DrivingAge(value: Int) extends AnyVal {
+case class DrivingAge(value: Int) {
   require(value >= 18, "Driving age cannot be less than 18")
 }
 

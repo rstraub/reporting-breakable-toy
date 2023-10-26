@@ -17,4 +17,8 @@ object ParsingError {
     override def message: String =
       s"Age must be at least 18 to drive: '${age.value}'"
   }
+
+    final case class DUIParseError(input: String) extends ParsingError {
+        override def message: String = s"Invalid input: '$input'"
+    }
 }

@@ -6,15 +6,15 @@ import nl.codecraftr.scala.reporting.breakabletoy.ParsingError._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class ParsingSpec extends AnyFlatSpec with Matchers {
+class AgeParsingSpec extends AnyFlatSpec with Matchers {
   it should "allow successful results given valid inputs" in {
-    val result = Parser.parse("21", "32")
+    val result = AgeParser.parse("21", "32")
 
     result shouldBe Valid(Seq(DrivingAge(21), DrivingAge(32)))
   }
 
   it should "accumulate errors about input in the wrong format" in {
-    val result = Parser.parse("c", "18", "a")
+    val result = AgeParser.parse("c", "18", "a")
 
     result shouldBe Invalid(
       NonEmptyChain.of(
@@ -25,7 +25,7 @@ class ParsingSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "accumulate errors about input being an invalid age" in {
-    val result = Parser.parse("21", "-1")
+    val result = AgeParser.parse("21", "-1")
 
     result shouldBe Invalid(
       NonEmptyChain.of(
@@ -35,7 +35,7 @@ class ParsingSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "accumulate errors about input being invalid driving age" in {
-    val result = Parser.parse("17")
+    val result = AgeParser.parse("17")
 
     result shouldBe Invalid(
       NonEmptyChain.of(
@@ -45,7 +45,7 @@ class ParsingSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "accumulate errors per input" in {
-    val result = Parser.parse("c", "-1", "17")
+    val result = AgeParser.parse("c", "-1", "17")
 
     result shouldBe Invalid(
       NonEmptyChain.of(
