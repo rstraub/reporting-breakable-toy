@@ -1,8 +1,9 @@
 package nl.codecraftr.scala.reporting.breakabletoy
 
 import cats.data.Validated._
-import cats.data.ValidatedNec
+import cats.data.{Validated, ValidatedNec}
 import cats.implicits._
+import cats.syntax._
 import nl.codecraftr.scala.reporting.breakabletoy.ParsingError._
 
 import scala.util.Try
@@ -22,26 +23,22 @@ object Parser {
       .map(parse)
       .traverse(_.toValidatedNec)
 
-  // TODO can we make these errors cascade
-  private def parse(input: String): Either[ParsingError, DrivingAge] =
-    for {
-      number <- parseNumber(input)
-      age <- parseAge(number)
-      drivingAge <- parseDrivingAge(age)
-    } yield drivingAge
+  private def parse(input: String): Validated[ParsingError, DrivingAge] =
+    parseNumber(input).andThen(parseAge).andThen(parseDrivingAge)
 
-  private def parseNumber(input: String): Either[InvalidNumberError, Int] = Try(
-    input.toInt
-  ).toEither.leftMap(_ => InvalidNumberError(input))
+  private def parseNumber(input: String): Validated[InvalidNumberError, Int] =
+    Try(
+      input.toInt
+    ).toValidated.leftMap(_ => InvalidNumberError(input))
 
   // TODO explore way to move validation closer to Age
-  private def parseAge(age: Int): Either[InvalidAgeError, Age] =
-    if (age < 0) Left(InvalidAgeError(age)) else Right(Age(age))
+  private def parseAge(age: Int): Validated[InvalidAgeError, Age] =
+    if (age < 0) Invalid(InvalidAgeError(age)) else Valid(Age(age))
 
   // TODO explore way to move validation closer to DrivingAge
   private def parseDrivingAge(
       age: Age
-  ): Either[NotAllowedToDriveError, DrivingAge] =
-    if (age.value < 18) Left(NotAllowedToDriveError(age))
-    else Right(DrivingAge(age.value))
+  ): Validated[NotAllowedToDriveError, DrivingAge] =
+    if (age.value < 18) Invalid(NotAllowedToDriveError(age))
+    else Valid(DrivingAge(age.value))
 }
