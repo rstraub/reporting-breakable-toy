@@ -26,8 +26,8 @@ object Parser {
   private def parse(input: String): Either[ParsingError, DrivingAge] =
     for {
       num <- parseNumber(input)
-      age <- parseAge(num)
-      drivingAge <- parseDrivingAge(age)
+      age <- Age.from(num)
+      drivingAge <- DrivingAge.from(age)
     } yield drivingAge
 
   private def parseNumber(input: String): Either[InvalidNumberError, Int] =
@@ -35,15 +35,4 @@ object Parser {
       input.toInt
     ).toEither.leftMap(_ => InvalidNumberError(input))
 
-  // TODO explore way to move validation closer to Age
-  private def parseAge(age: Int): Either[InvalidAgeError, Age] =
-    if (age < 0) Left(InvalidAgeError(age)) else Right(Age(age))
-
-  // TODO explore way to move validation closer to DrivingAge
-  private def parseDrivingAge(
-      age: Age
-  ): Either[NotAllowedToDriveError, DrivingAge] =
-    if (age.value < 18) Left(NotAllowedToDriveError(age))
-    // TODO could we not duplicate the data model between Age -> DrivingAge (age.value)
-    else Right(DrivingAge(age.value))
 }
