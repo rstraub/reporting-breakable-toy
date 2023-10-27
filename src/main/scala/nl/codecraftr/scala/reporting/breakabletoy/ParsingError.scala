@@ -19,6 +19,6 @@ object ParsingError {
   }
 
     final case class DUIParseError(input: String) extends ParsingError {
-        override def message: String = s"Invalid input: '$input'"
+        override def message: String = s"Invalid DUI: '$input'"
     }
 }

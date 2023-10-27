@@ -8,13 +8,13 @@ import org.scalatest.matchers.should.Matchers
 
 class AgeParsingSpec extends AnyFlatSpec with Matchers {
   it should "allow successful results given valid inputs" in {
-    val result = AgeParser.parse("21", "32")
+    val result = AgeParser.parse(List("21", "32"))
 
-    result shouldBe Valid(Seq(DrivingAge(21), DrivingAge(32)))
+    result shouldBe Valid(Seq(DrivingAge(Age(21)), DrivingAge(Age(32))))
   }
 
   it should "accumulate errors about input in the wrong format" in {
-    val result = AgeParser.parse("c", "18", "a")
+    val result = AgeParser.parse(List("c", "18", "a"))
 
     result shouldBe Invalid(
       NonEmptyChain.of(
@@ -25,7 +25,7 @@ class AgeParsingSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "accumulate errors about input being an invalid age" in {
-    val result = AgeParser.parse("21", "-1")
+    val result = AgeParser.parse(List("21", "-1"))
 
     result shouldBe Invalid(
       NonEmptyChain.of(
@@ -45,7 +45,7 @@ class AgeParsingSpec extends AnyFlatSpec with Matchers {
   }
 
   it should "accumulate errors per input" in {
-    val result = AgeParser.parse("c", "-1", "17")
+    val result = AgeParser.parse(List("c", "-1", "17"))
 
     result shouldBe Invalid(
       NonEmptyChain.of(

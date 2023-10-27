@@ -8,11 +8,6 @@ import nl.codecraftr.scala.reporting.breakabletoy.ParsingError.{
 
 import scala.util.Try
 
-/*
- * TODO: what about using Type Classes to indicate validated values
- *  This could be combined with types to reduce the amount of boilerplate and duplication
- */
-// TODO: using inheritance
 case class Age(value: Int) {
   require(value >= 0, "Age cannot be negative")
 }
@@ -22,12 +17,13 @@ object Age {
     Try(Age(number)).toEither.leftMap(_ => InvalidAgeError(number))
 }
 
-case class DrivingAge(value: Int) {
-  require(value >= 18, "Driving age cannot be less than 18")
+case class DrivingAge(age: Age) {
+  require(age.value >= 18, "Driving age cannot be less than 18")
 }
 
+// TODO what if we make the implementation a private class and define DrivingAge as a trait
 object DrivingAge {
   def from(age: Age): Either[NotAllowedToDriveError, DrivingAge] = Try(
-    DrivingAge(age.value)
+    DrivingAge(age)
   ).toEither.leftMap(_ => NotAllowedToDriveError(age))
 }
