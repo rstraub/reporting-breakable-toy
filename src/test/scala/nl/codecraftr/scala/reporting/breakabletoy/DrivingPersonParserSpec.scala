@@ -1,8 +1,7 @@
 package nl.codecraftr.scala.reporting.breakabletoy
 
-import cats.data.{NonEmptyChain, NonEmptyChainImpl}
+import cats.data.NonEmptyChain
 import cats.data.Validated.{Invalid, Valid}
-import cats.implicits.catsSyntaxValidatedIdBinCompat0
 import nl.codecraftr.scala.reporting.breakabletoy.ParsingError.{
   DUIParseError,
   NotAllowedToDriveError

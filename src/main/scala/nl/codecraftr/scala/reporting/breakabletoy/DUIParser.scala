@@ -1,7 +1,6 @@
 package nl.codecraftr.scala.reporting.breakabletoy
 
-import cats.data.{Validated, ValidatedNec}
-import cats.data.Validated.{Invalid, Valid}
+import cats.data.ValidatedNec
 import cats.implicits._
 import nl.codecraftr.scala.reporting.breakabletoy.ParsingError.DUIParseError
 
